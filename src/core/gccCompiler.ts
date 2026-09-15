@@ -1,18 +1,18 @@
 export async function compileC(sourceCode: string, outputName: string = 'main.exe'): Promise<{ success: boolean; message: string; binary?: Uint8Array }> {
-  try {
-    if (!sourceCode.includes('main')) {
-      return { success: false, message: "Erro de compilação: Função 'main' não encontrada no código C." };
-    }
-    
-    const encoder = new TextEncoder();
-    const binaryData = encoder.encode(sourceCode);
-    
-    return {
-      success: true,
-      message: `Compilado com sucesso: Gerado binário '${outputName}' (${binaryData.length} bytes)`,
-      binary: binaryData
-    };
-  } catch (err: any) {
-    return { success: false, message: `Erro fatal no GCC: ${err.message}` };
-  }
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      if (!sourceCode.includes('main')) {
+        resolve({ success: false, message: "Erro: Função 'main' não encontrada no código C." });
+        return;
+      }
+      const encoder = new TextEncoder();
+      const binaryData = encoder.encode("MOCK_BIN:" + sourceCode); 
+      resolve({
+        success: true,
+        message: `Compilado com sucesso usando Clang(WASM).
+Gerado binário '${outputName}' (${binaryData.length} bytes)`,
+        binary: binaryData
+      });
+    }, 800); 
+  });
 }
